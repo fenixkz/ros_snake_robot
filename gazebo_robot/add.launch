@@ -1,0 +1,2 @@
+<param name="robot_description1" command="$(find xacro)/xacro.py '$(find robot_description)/urdf/box.xacro'"/>
+<node name="urdf_spawner1" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model robot1 -param robot_description1" />

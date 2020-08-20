@@ -1,0 +1,17 @@
+robot:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  group1_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - motortom2m
+      - joint2
+      - joint4
+      - joint6
+
+  group2_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - end
