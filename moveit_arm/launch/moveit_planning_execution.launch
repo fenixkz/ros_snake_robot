@@ -1,0 +1,27 @@
+<launch>
+	# This is needed for gazebo execution
+	<rosparam command="load" file="$(find moveit_arm)/config/joint_names.yaml"/> 
+
+	<include file="$(find moveit_arm)/launch/planning_context.launch">
+		<arg name="load_robot_description" value="true"/>
+	</include>
+
+
+  # The planning and execution components of MoveIt! configured to 
+  # publish the current configuration of the robot (simulated or real) 
+  # and the current state of the world as seen by the planner
+  <include file="$(find moveit_arm)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+	# This is needed for gazebo execution	
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+	<param name="/use_gui" value="false"/>
+	<rosparam param="/source_list">[robot/joint_states]</rosparam>
+	</node>
+
+  # The visualization component of MoveIt!
+  <include file="$(find moveit_arm)/launch/moveit_rviz.launch">
+	<arg name="config" value="true"/>
+  </include>
+
+</launch>

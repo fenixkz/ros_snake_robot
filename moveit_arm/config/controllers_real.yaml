@@ -1,0 +1,13 @@
+controller_list:
+  - name: main_arm
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - motortom2m
+      - joint2
+      - joint4
+      - joint6
+      - end
+
+

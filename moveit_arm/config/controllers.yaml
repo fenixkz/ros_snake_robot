@@ -1,0 +1,17 @@
+controller_list:
+    - name: robot/group1_controller
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      default: true
+      joints:
+      - motortom2m
+      - joint2
+      - joint4
+      - joint6
+
+    - name: robot/group2_controller
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      default: true
+      joints:
+      - end
