@@ -1,0 +1,66 @@
+<launch>
+
+
+
+
+    <!-- Start tilt joint controller -->
+    <rosparam file="$(find my_dynamixel_tutorial)/src/controllers_moveit.yaml" command="load"/>
+    <node name="tilt_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --port pan_tilt_port
+		joint6
+		joint4
+		joint2
+		motortom2m
+		end
+		"
+          output="screen"/>
+<rosparam file="$(find my_dynamixel_tutorial)/src/trajectory_controllers.yaml" command="load"/>
+    <node name="tilt_controller_spawner_meta" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --type=meta
+		main_arm
+		motortom2m
+		joint2
+		joint4
+		joint6
+		"
+          output="screen"/>
+
+    <node name="tilt_controller_spawner_end" pkg="dynamixel_controllers" type="controller_spawner.py"
+          args="--manager=dxl_manager
+                --type=meta
+		end_effector
+		end
+		"
+          output="screen"/>
+
+
+
+
+     <param name="robot_description" command="$(find xacro)/xacro.py '$(find robot_description)/urdf/moveit_robot.xacro'" />
+
+ <!--	 <node name="State_Publisher" pkg="dxl_tutorial" type="state_publisher.py" /> -->
+	# Already in moveit_planning...
+ <!-- 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    			<param name="/use_gui" value="false"/>
+    			<rosparam param="/source_list">[/robot/joint_states]</rosparam>
+  	</node> -->
+
+
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+  </node>
+
+  <node name="moveit_motor_state" pkg="move" type="moveit_motor_state"/>	
+
+
+	<!-- convert joint states to TF transforms for rviz, etc -->
+  <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/dynamixel/joint_states" />
+  </node> -->
+
+</launch>

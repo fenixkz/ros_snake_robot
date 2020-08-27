@@ -1,0 +1,16 @@
+<launch>
+    <!-- Start tilt joint controller -->
+    <rosparam file="$(find my_dynamixel_tutorial)/src/tilt.yaml" command="load"/>
+    <node name="tilt_controller_spawner" pkg="dynamixel_workbench_controllers" type="position_control"
+          args="
+		joint2_controller
+		"
+          output="screen"/>
+
+	<!-- convert joint states to TF transforms for rviz, etc -->
+  <!--<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/dynamixel/joint_states" />
+  </node> -->
+
+</launch>

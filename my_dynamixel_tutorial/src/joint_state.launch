@@ -1,0 +1,19 @@
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find robot_description)/urdf/robotnew.xacro'" />
+
+  <node name="State_Publisher" pkg="dxl_tutorial" type="state_publisher.py" /> 
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    		<param name="/use_gui" value="false"/>
+    		<rosparam param="/source_list">[/robot/joint_states]</rosparam>
+  </node>
+
+
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+  </node>
+
+</launch>
