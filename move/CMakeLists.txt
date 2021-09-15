@@ -205,38 +205,8 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-add_executable(rotate src/rotate.cpp)
-target_link_libraries(rotate ${catkin_LIBRARIES})
-
-add_executable(motor_state src/motor_state.cpp)
-target_link_libraries(motor_state ${catkin_LIBRARIES})
-
-add_executable(control_gazebo src/control_gazebo.cpp)
-target_link_libraries(control_gazebo ${catkin_LIBRARIES})
-
-add_executable(tactiledata src/tactiledata.cpp)
-target_link_libraries(tactiledata ${catkin_LIBRARIES})
-
-add_executable(moveit src/moveit.cpp)
-target_link_libraries(moveit ${catkin_LIBRARIES})
-
-add_executable(delta src/delta.cpp)
-target_link_libraries(delta ${catkin_LIBRARIES})
 
 add_executable(moveit_motor_state src/moveit_motor_state.cpp)
 target_link_libraries(moveit_motor_state ${catkin_LIBRARIES})
 
-add_executable(grayscale src/grayscale.cpp)
-target_link_libraries(grayscale ${catkin_LIBRARIES})
 
-add_executable(cop src/cop.cpp)
-target_link_libraries(cop ${catkin_LIBRARIES})
-
-add_executable(xy src/xy.cpp)
-target_link_libraries(xy ${catkin_LIBRARIES})
-
-add_executable(delta_x src/delta_x.cpp)
-target_link_libraries(delta_x ${catkin_LIBRARIES})
-
-add_executable(area src/area.cpp)
-target_link_libraries(area ${catkin_LIBRARIES})
