@@ -17,8 +17,6 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_ros_planning_interface
   rviz_visual_tools
   moveit_visual_tools
-  cv_bridge
-  nidaq
 )
 
 ## System dependencies are found with CMake's conventions
@@ -113,7 +111,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES move
-  CATKIN_DEPENDS roscpp std_msgs robot_control sensor_msgs dynamixel_msgs tf cv_bridge
+  CATKIN_DEPENDS roscpp std_msgs robot_control sensor_msgs dynamixel_msgs tf 
 #  DEPENDS system_lib
 )
 
