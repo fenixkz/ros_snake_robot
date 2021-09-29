@@ -28,3 +28,10 @@ joint2 - second joint
 joint4 - third joint
 joint6 - fourth joint
 end - fifth joint
+
+Changing moveit controllers to control the real robot:
+
+In hand_tutorial_moveit_controller_manager.launch.xml change:
+  <rosparam file="$(find moveit_arm)/config/controllers.yaml"/>
+  to
+  <rosparam file="$(find moveit_arm)/config/controllers_real.yaml"/>
