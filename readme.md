@@ -3,7 +3,7 @@
 ## Project overview
 This repository contains files that control either the simulated model or the real 5-DOF planar robot. The robot consists of five dynamixel MX-28 servomotors connected with 3D printed links.
 
-![text](https://github.com/fenixkz/ros_snake_robot/blob/master/5dofrobot.jpg)
+![text](https://github.com/fenixkz/ros_snake_robot/blob/kinetic/5dofrobot.jpg)
 
 The simulated model is spawned in the Gazebo engine. Also, visualization is available in RViz. Everything is interconnected within Robot Operating System (ROS). 
 
