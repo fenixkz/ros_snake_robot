@@ -14,6 +14,5 @@
             /snake/Joint2_PositionController
             /snake/Joint3_PositionController
             /snake/Joint4_PositionController
-            /snake/Joint5_PositionController
-            /snake/arm_trajectory_controller"/>
+            /snake/Joint5_PositionController"/>
 </launch>
