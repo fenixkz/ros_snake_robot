@@ -8,7 +8,9 @@ This repository contains files that control either the simulated model or the re
 Everything is interconnected within Robot Operating System (ROS) Melodic distribution. 
 
 ## Prerequisites 
-The project has been implemented on Ubuntu 18.04 machine with ROS Melodic. To be able to run the project ROS must be installed on your local machine. Also, the following libraries are required:
+The project has been implemented on Ubuntu 18.04 machine with ROS Melodic. Dynamixel motor must have Protocol 2.0 in order to work with the current library. 
+
+To be able to run the project ROS must be installed on your local machine. Also, the following libraries are required:
 
   - MoveIt
   - ros_controllers
