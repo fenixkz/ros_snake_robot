@@ -1,0 +1,13 @@
+# Publish all joint states
+# Creates the /joint_states topic necessary in ROS
+controller_list:
+  - name: snake
+    action_ns: follow_joint_trajectory/follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - Joint1
+      - Joint2
+      - Joint3
+      - Joint4
+      - Joint5

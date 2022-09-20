@@ -1,0 +1,690 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hand_tutorial">
+
+ <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+</xacro:macro>
+<link name="world"/>
+
+
+
+<link name="base_link">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/ggwp.stl" />
+	</geometry>
+	<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+	</visual>
+	<collision name="link_collision">
+	<geometry>
+	<mesh filename ="package://robot_description/meshes/ggwp.stl" />
+	</geometry>
+	<origin xyz="0 0 -0.05" rpy="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.5"/>
+</link>
+
+
+
+<link name="m2m">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+	</visual>
+	<collision name="m2m_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+
+<link name="m2m01">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+	</visual>
+	<collision name="m2m_collision01">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="m2m02">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+	</visual>
+	<collision name="m2m_collision01">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="m2m03">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	</visual>
+	<collision name="m2m_collision01">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/short.stl"/>
+	</geometry>
+	<origin rpy ="0 0 0" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+
+
+
+<link name="motor">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</visual>
+	<collision name="motor_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="1"/>
+</link>
+
+
+
+<link name="motor01">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</visual>
+	<collision name="motor_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="1"/>
+</link>
+
+
+<link name="motor02">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</visual>
+	<collision name="motor_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="1"/>
+</link>
+
+
+
+<link name="motor03">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</visual>
+	<collision name="motor_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="1"/>
+</link>
+
+
+
+<link name="motor04">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</visual>
+	<collision name="motor_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/motor.stl"/>
+	</geometry>
+	<origin rpy ="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="1"/>
+</link>
+
+
+<link name="endeffector">
+	<visual>
+	<geometry>
+	<mesh filename="package://robot_description/meshes/end_nosensor.STL"/>
+	</geometry>
+	<origin rpy= " 0 0 3.14" xyz ="0 0 0"/>
+	  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+	</visual>
+	<collision name="end_collision">
+	<geometry>
+	<mesh filename="package://robot_description/meshes/end_nosensor.STL"/>
+	</geometry>
+	<origin rpy="0 0 3.14" xyz="0 0 0"/>
+	</collision>
+	<xacro:default_inertial mass="0.1"/>
+</link>
+
+
+<link name="sensor1">
+	<visual>
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</visual>
+	<collision name="sensor1_collision">
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="sensor2">
+	<visual>
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</visual>
+	<collision name="sensor2_collision">
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="sensor3">
+	<visual>
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</visual>
+	<collision name="sensor3_collision">
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="sensor4">
+	<visual>
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</visual>
+	<collision name="sensor4_collision">
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+<link name="sensor5">
+	<visual>
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</visual>
+	<collision name="sensor5_collision">
+	<geometry>
+	<box size="0.03 0.06 0.06"/>
+	</geometry>
+	</collision>
+	<xacro:default_inertial mass="0.01"/>
+</link>
+
+
+
+<link name ="sensor_frame">
+	<visual>
+	<geometry>
+		<box size = "0.01 0.01 0.01"/>
+	</geometry>
+		<origin rpy= " 0 0 0" xyz ="0 0 0"/>
+  </visual>
+	<collision>
+		<geometry>
+			<box size="0.01 0.01 0.01"/>
+		</geometry>
+	</collision>
+</link>
+
+
+<joint name="basetoworld" type="fixed">
+	<parent link="world"/>
+	<child link="base_link"/>
+</joint>
+
+
+
+<joint name="basetomotor" type="fixed">
+
+	<parent link="base_link"/>
+	<child link="motor"/>
+	<origin xyz ="0.267 0 0.23"/>
+</joint>
+
+
+<joint name="motortom2m" type="revolute">
+	<parent link="motor"/>
+	<child link="m2m"/>
+	<origin xyz ="0.12 0 -0.178"/>
+	<axis xyz = "0 0 1"/>
+	<limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.5"/>
+</joint>
+
+
+<joint name="joint1" type="fixed">
+	<parent link ="m2m"/>
+	<child link ="motor01"/>
+
+	<origin xyz = "0.59 0 0.17"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+
+<joint name="joint2" type="revolute">
+	<parent link="motor01"/>
+	<child link="m2m01"/>
+	<origin xyz ="0.12 0 -0.178"/>
+	<axis xyz = "0 0 1"/>
+	<limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.5"/>
+</joint>
+
+<joint name="joint3" type ="fixed">
+	<parent link ="m2m01"/>
+	<child link="motor02"/>
+	<origin xyz = "0.59 0 0.17"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="joint4" type="revolute">
+	<parent link="motor02"/>
+	<child link="m2m02"/>
+	<origin xyz ="0.12 0 -0.178"/>
+	<axis xyz = "0 0 1"/>
+	<limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.5"/>
+</joint>
+
+
+<joint name="joint5" type ="fixed">
+	<parent link ="m2m02"/>
+	<child link="motor03"/>
+	<origin xyz = "0.59 0 0.17"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+
+<joint name="joint6" type="revolute">
+	<parent link="motor03"/>
+	<child link="m2m03"/>
+	<origin xyz ="0.12 0 -0.178"/>
+	<axis xyz = "0 0 1"/>
+	<limit effort="1000.0" lower="-2.0" upper="2.0" velocity="0.5"/>
+</joint>
+
+
+<joint name="joint7" type ="fixed">
+	<parent link ="m2m03"/>
+	<child link="motor04"/>
+	<origin xyz = "0.59 0 0.17"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="end" type="revolute">
+	<parent link="motor04"/>
+	<child link ="endeffector"/>
+	<origin xyz="0.12 -0.01 -0.178"/>
+	<axis xyz = "0 0 1"/>
+	<limit effort="1000.0" lower = "-2.0" upper="2.0" velocity="0.5"/>
+</joint>
+
+
+<joint name="first_sensor" type="fixed">
+	<parent link="endeffector"/>
+	<child link="sensor1"/>
+	<origin xyz= "0.469 -0.19 0.225"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="second_sensor" type="fixed">
+	<parent link="endeffector"/>
+	<child link="sensor2"/>
+	<origin xyz= "0.469 -0.1 0.225"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="third_sensor" type="fixed">
+	<parent link="endeffector"/>
+	<child link="sensor3"/>
+	<origin xyz= "0.469 -0.01 0.225"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="4_sensor" type="fixed">
+	<parent link="endeffector"/>
+	<child link="sensor4"/>
+	<origin xyz= "0.469 0.08 0.225"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<joint name="5_sensor" type="fixed">
+	<parent link="endeffector"/>
+	<child link="sensor5"/>
+	<origin xyz= "0.469 0.17 0.225"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+<joint name="sensor" type="fixed">
+	<parent link ="endeffector"/>
+	<child link="sensor_frame"/>
+	<origin xyz = "0.475 0.005 0.23"/>
+	<limit effort="0" lower = "0.0" upper="0.0" velocity="0.0"/>
+</joint>
+
+
+<transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motortom2m">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint6">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+
+<transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="end">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor5">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <gazebo reference="m2m">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="m2m01">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="m2m02">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="m2m03">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="base_link">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="motor">
+         <material>Gazebo/Gold</material>
+  </gazebo>
+
+  <gazebo reference="motor01">
+         <material>Gazebo/Gold</material>
+  </gazebo>
+
+  <gazebo reference="motor02">
+         <material>Gazebo/Gold</material>
+  </gazebo>
+
+  <gazebo reference="motor03">
+         <material>Gazebo/Gold</material>
+  </gazebo>
+
+  <gazebo reference="motor04">
+         <material>Gazebo/Gold</material>
+  </gazebo>
+
+  <gazebo reference="endeffector">
+         <material>Gazebo/Grey</material>
+  </gazebo>
+
+    <gazebo reference="sensor1">
+      <kp>1000000.0</kp>
+      <kd>100.0</kd>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <maxVel>1.0</maxVel>
+        <sensor name="end_sensor1" type="contact">
+          <always_on>true</always_on>
+          <update_rate>50</update_rate>
+          <contact>
+            <collision>endeffector_fixed_joint_lump__sensor1_collision_collision_3</collision>
+          </contact>
+          <plugin name="gazebo_ros_bumper_controller1" filename="libgazebo_ros_bumper.so">
+              <bumperTopicName>robot_sensor1</bumperTopicName>
+              <alwaysOn>true</alwaysOn>
+              <frameName>sensor1</frameName>
+              <updateRate>0</updateRate>
+          </plugin>
+        </sensor>
+    </gazebo>
+
+
+<gazebo reference="sensor2">
+  <kp>1000000.0</kp>
+  <kd>100.0</kd>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+  <maxVel>1.0</maxVel>
+    <sensor name="end_sensor2" type="contact">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <contact>
+        <collision>endeffector_fixed_joint_lump__sensor2_collision_collision_4</collision>
+      </contact>
+      <plugin name="gazebo_ros_bumper_controller2" filename="libgazebo_ros_bumper.so">
+        <bumperTopicName>robot_sensor2</bumperTopicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>sensor2</frameName>
+        <updateRate>0</updateRate>
+      </plugin>
+    </sensor>
+ </gazebo>
+
+
+
+<gazebo reference="sensor3">
+  <kp>1000000.0</kp>
+  <kd>100.0</kd>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+  <maxVel>1.0</maxVel>
+    <sensor name="end_sensor3" type="contact">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <contact>
+        <collision>endeffector_fixed_joint_lump__sensor3_collision_collision_6</collision>
+      </contact>
+      <plugin name="gazebo_ros_bumper_controller3" filename="libgazebo_ros_bumper.so">
+        <bumperTopicName>robot_sensor3</bumperTopicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>sensor3</frameName>
+        <updateRate>0</updateRate>
+      </plugin>
+    </sensor>
+ </gazebo>
+
+
+<gazebo reference="sensor4">
+  <kp>1000000.0</kp>
+  <kd>100.0</kd>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+  <maxVel>1.0</maxVel>
+    <sensor name="end_sensor4" type="contact">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <contact>
+        <collision>endeffector_fixed_joint_lump__sensor4_collision_collision_1</collision>
+      </contact>
+      <plugin name="gazebo_ros_bumper_controller4" filename="libgazebo_ros_bumper.so">
+        <bumperTopicName>robot_sensor4</bumperTopicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>sensor4</frameName>
+        <updateRate>0</updateRate>
+      </plugin>
+    </sensor>
+ </gazebo>
+
+
+    <gazebo reference="sensor5">
+          <kp>1000000.0</kp>
+          <kd>100.0</kd>
+          <mu1>1.0</mu1>
+          <mu2>1.0</mu2>
+          <maxVel>1.0</maxVel>
+      <sensor name="end_sensor5" type="contact">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <contact>
+        <collision>endeffector_fixed_joint_lump__sensor5_collision_collision_2</collision>
+      </contact>
+      <plugin name="gazebo_ros_bumper_controller5" filename="libgazebo_ros_bumper.so">
+        <bumperTopicName>robot_sensor5</bumperTopicName>
+        <alwaysOn>true</alwaysOn>
+        <frameName>sensor5</frameName>
+        <updateRate>0</updateRate>
+      </plugin>
+    </sensor>
+ </gazebo>
+
+
+  <gazebo reference="sensor_frame">
+         <material>Gazebo/Blue</material>
+  </gazebo>
+
+ <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/robot</robotNamespace>
+
+    </plugin>
+  </gazebo>
+
+
+
+
+
+</robot>

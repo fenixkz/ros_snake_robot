@@ -1,0 +1,41 @@
+snake:
+    # Publish all joint states
+    joint_states:
+      type: joint_state_controller/JointStateController
+      publish_rate: 200
+
+    Joint1_PositionController:
+      type: position_controllers/JointPositionController
+      joint: Joint1
+
+    Joint2_PositionController:
+      type: position_controllers/JointPositionController
+      joint: Joint2
+
+    Joint3_PositionController:
+      type: position_controllers/JointPositionController
+      joint: Joint3
+
+    Joint4_PositionController:
+      type: position_controllers/JointPositionController
+      joint: Joint4
+
+    Joint5_PositionController:
+      type: position_controllers/JointPositionController
+      joint: Joint5
+
+    follow_joint_trajectory:
+      type: position_controllers/JointTrajectoryController
+      joints:
+        - Joint1
+        - Joint2
+        - Joint3
+        - Joint4
+        - Joint5
+      constraints:
+        goal_time: 0.5
+        Joint1: {trajectory: 0.1, goal: 0.1}
+        Joint2: {trajectory: 0.1, goal: 0.1}
+        Joint3: {trajectory: 0.1, goal: 0.1}
+        Joint4: {trajectory: 0.1, goal: 0.1}
+        Joint5: {trajectory: 0.1, goal: 0.1}

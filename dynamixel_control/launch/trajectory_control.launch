@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <rosparam file="$(find dynamixel_control)/config/controllers.yaml" command="load"/>
+  <rosparam file="$(find dynamixel_control)/config/joint_limits.yaml" command="load"/>
+  <rosparam file="$(find dynamixel_control)/config/config.yaml" command="load"/>
+  <node name="SnakeHardwareInterface" pkg="dynamixel_control" type="snake_hardware_interface" output="screen"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find robot_description)/urdf/moveit_robot.xacro'" />
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/> -->
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+        args="
+            /snake/joint_states
+            /snake/follow_joint_trajectory"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+</launch>
