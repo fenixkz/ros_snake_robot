@@ -29,16 +29,23 @@ The robot must be connected to a power source providing 12V. Also, an appropriat
 $ roslaunch my_dynamixel_tutorial controller_manager.launch
 ```
 The output "5 motors found"
+
 Then, start the controllers:
 ```
 $ roslaunch my_dynamixel_tutorial start_moveit_arm_controllers.launch
 ```
 After that corresponding topics will appear:
+
 motortom2m - first joint
+
 joint2 - second joint
+
 joint4 - third joint
+
 joint6 - fourth joint
+
 end - fifth joint
+
 It is also possible to use MoveIt to control the real robot. For that a few changes should be made:
 
 In **hand_tutorial_moveit_controller_manager.launch.xml** change:
