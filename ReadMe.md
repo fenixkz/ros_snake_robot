@@ -27,9 +27,13 @@ Each joint has a name: Joint#, where # is the number of the joint. Starting with
 After that corresponding topics will appear:
 
 /snake/Joint1PositionCommand
+
 /snake/Joint2PositionCommand
+
 /snake/Joint3PositionCommand
+
 /snake/Joint4PositionCommand
+
 /snake/Joint5PositionCommand
 
 ## MoveIt
