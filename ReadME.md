@@ -25,13 +25,17 @@ After that 5 Position Controller should be spawned.
 Each joint has a name: Joint#, where # is the number of the joint. Starting with 1 of the base joint to 5 of the end-effector.
 
 After that corresponding topics will appear:
-
+```
 /snake/Joint1PositionCommand
-/snake/Joint2PositionCommand
-/snake/Joint3PositionCommand
-/snake/Joint4PositionCommand
-/snake/Joint5PositionCommand
 
+/snake/Joint2PositionCommand
+
+/snake/Joint3PositionCommand
+
+/snake/Joint4PositionCommand
+
+/snake/Joint5PositionCommand
+```
 ## MoveIt
 It is also possible to deploy MoveIt to control the robot in Cartesian space or do trajectory planning and collision avoidance. 
 
