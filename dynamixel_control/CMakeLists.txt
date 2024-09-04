@@ -9,7 +9,6 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   dynamixel_sdk
-  dynamixel_sdk_examples
   roscpp
   rospy
   std_msgs
@@ -138,7 +137,6 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(joint_control src/joint_control.cpp)
 add_executable(snake_hardware_interface src/snake_hardware_interface.cpp)
 
 ## Rename C++ executable without prefix
@@ -152,8 +150,6 @@ add_executable(snake_hardware_interface src/snake_hardware_interface.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(joint_control
-   ${catkin_LIBRARIES})
 target_link_libraries(snake_hardware_interface
    ${catkin_LIBRARIES})
 #############
