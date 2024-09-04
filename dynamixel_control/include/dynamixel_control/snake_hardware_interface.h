@@ -7,9 +7,6 @@
 #include <controller_manager/controller_manager.h>
 #include "std_msgs/String.h"
 #include "std_msgs/Float32.h"
-#include "dynamixel_sdk_examples/GetPosition.h"
-#include "dynamixel_sdk_examples/SetPosition.h"
-#include "dynamixel_sdk_examples/BulkGetItem.h"
 #include "dynamixel_sdk/dynamixel_sdk.h"
 #include "string"
 #include "vector"
@@ -23,17 +20,19 @@
 #define ADDR_PRESENT_LOAD     126
 #define DYN2RAD               4096/6.28
 
-class MyRobot : public hardware_interface::RobotHW
+class SnakeRobot : public hardware_interface::RobotHW
 {
     public:
-        MyRobot(ros::NodeHandle& nh);
-        ~MyRobot();
+        SnakeRobot(ros::NodeHandle& nh);
+        ~SnakeRobot();
         void init();
         void update(const ros::TimerEvent& e);
         void read();
         void write(ros::Duration elapsed_time);
 
     protected:
+        void registerJoints();
+        
         hardware_interface::JointStateInterface joint_state_interface_;
         hardware_interface::PositionJointInterface position_joint_interface_;
 
