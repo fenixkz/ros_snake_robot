@@ -51,6 +51,20 @@ void SnakeRobot::init() {
       return;
     }
     
+    // Ping the motors
+    for (int i = 0; i < IDs.size(); i++) {
+        uint16_t model_number = 0;
+        dxl_comm_result = packetHandler->ping(portHandler, IDs[i], &model_number, &dxl_error);
+        if (dxl_comm_result != COMM_SUCCESS) {
+            ROS_ERROR("Failed to ping Dynamixel ID %d", IDs[i]);
+            ROS_ERROR("Dynamixel error: %s", packetHandler->getRxPacketError(dxl_error));
+            return;
+        } else {
+            ROS_INFO("Dynamixel ID %d pinged successfully. Model number: %d", IDs[i], model_number);
+        }
+    }
+
+    
     // Enable Dynamixel Torque
     for (int i = 0; i < IDs.size(); i++){
       ROS_INFO("Enabling torque for Dynamixel ID %d", IDs[i]);
