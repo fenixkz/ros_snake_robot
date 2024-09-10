@@ -46,11 +46,12 @@ void SnakeRobot::init() {
     }
     ROS_INFO_STREAM("Port is open");
     // Set port baudrate
+    ROS_INFO("Setting the baudrate: %d", baudrate);
     if (!portHandler->setBaudRate(baudrate)) {
       ROS_ERROR("Failed to set the baudrate!");
       return;
     }
-    
+    ROS_INFO("Baudrate set");
     // Ping the motors
     for (int i = 0; i < IDs.size(); i++) {
         uint16_t model_number = 0;
