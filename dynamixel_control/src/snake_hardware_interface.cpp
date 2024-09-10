@@ -39,24 +39,28 @@ void SnakeRobot::init() {
     bulkWrite.reset(new dynamixel::GroupBulkWrite(portHandler, packetHandler));
     positions.resize(5);
     // Initialize PortHandler instance, open the port
+    ROS_INFO_STREAM("Trying to open the port: " << device_name << " with baudrate: "<< baudrate);
     if (!portHandler->openPort()) {
       ROS_ERROR("Failed to open the port!");
       return;
     }
+    ROS_INFO_STREAM("Port is open");
     // Set port baudrate
     if (!portHandler->setBaudRate(baudrate)) {
       ROS_ERROR("Failed to set the baudrate!");
       return;
     }
-
+    
     // Enable Dynamixel Torque
     for (int i = 0; i < IDs.size(); i++){
+      ROS_INFO("Enabling torque for Dynamixel ID %d", IDs[i]);
       dxl_comm_result = packetHandler->write1ByteTxRx(
         portHandler, IDs[i], ADDR_TORQUE_ENABLE, 1, &dxl_error);
       if (dxl_comm_result != COMM_SUCCESS) {
         ROS_ERROR("Failed to enable torque for Dynamixel ID %d", IDs[i]);
         return;
       }
+      ROS_INFO("Torque enabled for Dynamixel ID %d", IDs[i]);
     }
     // Register all joints for hardware interface
     SnakeRobot::registerJoints();
