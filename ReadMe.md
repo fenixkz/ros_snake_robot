@@ -28,30 +28,34 @@ Each joint has a name: Joint#, where # is the number of the joint. Starting with
 
 After that corresponding topics will appear:
 ```
-/snake/Joint1PositionController/command
+/snake/joint1_controller/command
 
-/snake/Joint2PositionController/command
+/snake/joint2_controller/command
 
-/snake/Joint3PositionController/command
+/snake/joint3_controller/command
 
-/snake/Joint4PositionController/command
+/snake/joint4_controller/command
 
-/snake/Joint5PositionController/command
+/snake/joint5_controller/command
 ```
 ## MoveIt
 It is also possible to deploy MoveIt to control the robot in Cartesian space or do trajectory planning and collision avoidance. 
 
 The neccessary package for MoveIt communication has been created: **moveit_snake**
 
-In order to control the robot with MoveIt, first the joint trajectory controller should be spawned.
-
-```
-roslaunch dynamixel_control trajectory_control.launch
-```
-
-After that:
 ```
 roslaunch moveit_arm moveit_planning_execution.launch
 ```
 
 Now, you can use MoveIt to control the robot in the real world.
+
+## Simulation
+
+The same robot can be simulated in moveit and can be used by the same commands, except an additional argument needs to be specified:
+`use_sim:=true`
+
+For example: 
+
+```
+roslaunch moveit_arm moveit_planning_execution.launch use_sim:=true
+```

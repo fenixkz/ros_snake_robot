@@ -1,38 +1,37 @@
 #include <dynamixel_control/snake_hardware_interface.h>
 
 
-SnakeRobot::SnakeRobot(ros::NodeHandle& nh) : nh_(nh) {
-  // Declare all JointHandles, JointInterfaces and JointLimitInterfaces of the robot.
-  init();
-
-  // Create the controller manager
-  controller_manager_.reset(new controller_manager::ControllerManager(this, nh_));
-
-  //Set the frequency of the control loop.
-  loop_hz_=100;
-  ros::Duration update_freq = ros::Duration(1.0/loop_hz_);
-
-  //Run the control loop
-  my_control_loop_ = nh_.createTimer(update_freq, &SnakeRobot::update, this);
+SnakeRobot::SnakeRobot(ros::NodeHandle& nh, bool use_sim) : nh_(nh), is_sim(use_sim) {
+  getParams();
+  if (!is_sim){
+    startDXL();
+  }else{
+    ROS_INFO_STREAM("Starting in simulation mode");
+  }
+  registerJoints();
 }
 
 SnakeRobot::~SnakeRobot() {
     // Clean up any resources used by the robot
     // Close the port
-    portHandler->closePort();
+    if (!is_sim){
+      portHandler->closePort();
+    }
 }
 
-void SnakeRobot::init() {
-    ros::param::param<double>("/protocol", protocol_version, 2.0);
-    ros::param::param<int>("/baudrate", baudrate, 57600);
-    ros::param::param<std::string>("/device_name", device_name, "/dev/ttyUSB0");
-    ros::param::get("/IDs", IDs);
-    ros::param::get("/initial_position", init_pose);
-    
+void SnakeRobot::getParams(){
+  ros::param::param<double>("/protocol", protocol_version, 2.0);
+  ros::param::param<int>("/baudrate", baudrate, 57600);
+  ros::param::param<std::string>("/device_name", device_name, "/dev/ttyUSB0");
+  ros::param::get("/IDs", IDs);
+  ros::param::get("/initial_position", init_pose);
+}
+
+void SnakeRobot::startDXL() {
     // Dynamixel RS485 protocol initialization
+    
     uint8_t dxl_error = 0;
     int dxl_comm_result = COMM_TX_FAIL;
-
     portHandler = dynamixel::PortHandler::getPortHandler(device_name.c_str());
     packetHandler = dynamixel::PacketHandler::getPacketHandler(protocol_version);
     bulkRead.reset(new dynamixel::GroupBulkRead(portHandler, packetHandler));
@@ -47,25 +46,23 @@ void SnakeRobot::init() {
     ROS_INFO_STREAM("Port is open");
     // Set port baudrate
     ROS_INFO("Setting the baudrate: %d", baudrate);
-    if (!portHandler->setBaudRate(baudrate)) {
+    if (!portHandler->setBaudRate(baudrate)){
       ROS_ERROR("Failed to set the baudrate!");
       return;
     }
     ROS_INFO("Baudrate set");
     // Ping the motors
-    for (int i = 0; i < IDs.size(); i++) {
+    for (int i = 0; i < IDs.size(); i++){
         uint16_t model_number = 0;
         dxl_comm_result = packetHandler->ping(portHandler, IDs[i], &model_number, &dxl_error);
-        if (dxl_comm_result != COMM_SUCCESS) {
+        if (dxl_comm_result != COMM_SUCCESS){
             ROS_ERROR("Failed to ping Dynamixel ID %d", IDs[i]);
             ROS_ERROR("Dynamixel error: %s", packetHandler->getRxPacketError(dxl_error));
             return;
-        } else {
+        }else{
             ROS_INFO("Dynamixel ID %d pinged successfully. Model number: %d", IDs[i], model_number);
         }
     }
-
-    
     // Enable Dynamixel Torque
     for (int i = 0; i < IDs.size(); i++){
       ROS_INFO("Enabling torque for Dynamixel ID %d", IDs[i]);
@@ -77,8 +74,6 @@ void SnakeRobot::init() {
       }
       ROS_INFO("Torque enabled for Dynamixel ID %d", IDs[i]);
     }
-    // Register all joints for hardware interface
-    SnakeRobot::registerJoints();
 }
 
 void SnakeRobot::registerJoints(){
@@ -107,104 +102,82 @@ void SnakeRobot::registerJoints(){
 }
 
 
-void SnakeRobot::update(const ros::TimerEvent& e) {
-    /**
-     * @brief Update function for the SnakeRobot. Basically the control loop.
-     * 
-     * This function is called periodically to update the robot's state and control.
-     * It performs the following steps:
-     * 1. Calculates the elapsed time since the last update.
-     * 2. Reads the current state of the robot's joints.
-     * 3. Updates the controller manager.
-     * 4. Writes new commands to the robot's joints.
-     * 
-     * @param e The ROS timer event containing timing information.
-     */
-    
-    elapsed_time_ = ros::Duration(e.current_real - e.last_real);
-    read();
-    controller_manager_->update(ros::Time::now(), elapsed_time_);
-    write(elapsed_time_);
-}
+
 
 
 void SnakeRobot::read(){
-  uint8_t dxl_error = 0;
-  int dxl_comm_result = COMM_TX_FAIL;
-  int dxl_addparam_result = false;
-  // Read Present Position (length : 4 bytes) and Convert uint32 -> int32
-  // When reading 2 byte data from AX / MX(1.0), use read2ByteTxRx() instead.
-  for (int i = 0; i < IDs.size(); i++){
-    dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_POSITION, 4);
-  }
-
-  dxl_comm_result = bulkRead->txRxPacket();
-  if (dxl_comm_result == COMM_SUCCESS) {
-    for (int i = 0; i < IDs.size(); i++){
-      int32_t enc = (int32_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_POSITION, 4);
-      joint_position_[i] = (enc - init_pose[i]) * 6.28 / 4096;
+  if (is_sim){
+    // Just forward the command to the sensor values in sim mode
+    for (size_t i = 0; i < IDs.size(); i++){
+      joint_position_[i] = joint_position_command_[i];
+      joint_velocity_[i] = 0;
+      joint_effort_[i] = 0;
     }
-    bulkRead->clearParam();
-  }
-  // Read Present Velocity (length : 4 bytes) 
-  for (int i = 0; i < IDs.size(); i++){
-    dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_VELOCITY, 4);
-  }
-  dxl_comm_result = bulkRead->txRxPacket();
-  if (dxl_comm_result == COMM_SUCCESS) {
+  }else{
+    uint8_t dxl_error = 0;
+    int dxl_comm_result = COMM_TX_FAIL;
+    int dxl_addparam_result = false;
+    // Read Present Position (length : 4 bytes) and Convert uint32 -> int32
+    // When reading 2 byte data from AX / MX(1.0), use read2ByteTxRx() instead.
     for (int i = 0; i < IDs.size(); i++){
-      joint_velocity_[i] = (int32_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_VELOCITY, 4);
+      dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_POSITION, 4);
+    }
+
+    dxl_comm_result = bulkRead->txRxPacket();
+    if (dxl_comm_result == COMM_SUCCESS) {
+      for (int i = 0; i < IDs.size(); i++){
+        int32_t enc = (int32_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_POSITION, 4);
+        joint_position_[i] = (enc - init_pose[i]) * 6.28 / 4096;
       }
-    bulkRead->clearParam();
-  }
-  // Read Present Load (length : 2 bytes)
-  for (int i = 0; i < IDs.size(); i++){
-    dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_LOAD, 2);
-  }
-  dxl_comm_result = bulkRead->txRxPacket();
-  if (dxl_comm_result == COMM_SUCCESS) {
+      bulkRead->clearParam();
+    }
+    // Read Present Velocity (length : 4 bytes) 
     for (int i = 0; i < IDs.size(); i++){
-      joint_effort_[i] = (int16_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_LOAD, 2);
-      }
-    bulkRead->clearParam();
+      dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_VELOCITY, 4);
+    }
+    dxl_comm_result = bulkRead->txRxPacket();
+    if (dxl_comm_result == COMM_SUCCESS) {
+      for (int i = 0; i < IDs.size(); i++){
+        joint_velocity_[i] = (int32_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_VELOCITY, 4);
+        }
+      bulkRead->clearParam();
+    }
+    // Read Present Load (length : 2 bytes)
+    for (int i = 0; i < IDs.size(); i++){
+      dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], ADDR_PRESENT_LOAD, 2);
+    }
+    dxl_comm_result = bulkRead->txRxPacket();
+    if (dxl_comm_result == COMM_SUCCESS) {
+      for (int i = 0; i < IDs.size(); i++){
+        joint_effort_[i] = (int16_t)bulkRead->getData((uint8_t)IDs[i], ADDR_PRESENT_LOAD, 2);
+        }
+      bulkRead->clearParam();
+    }
   }
 }
 
-void SnakeRobot::write(ros::Duration elapsed_time) {
-  uint8_t dxl_error = 0;
-  int dxl_comm_result = COMM_TX_FAIL;
-  int dxl_addparam_result = false;
-  uint8_t param_goal_position[4];
-  // Safety
-  positionJointSaturationInterface.enforceLimits(elapsed_time); 
-  // Write Goal Position (length : 4 bytes)
-  for (int i = 0; i < IDs.size(); i++){
-    double pos = joint_position_command_[i] * 4096 / 6.28 + init_pose[i];
-    positions[i] = (unsigned int)pos;
-    // ROS_INFO("Joint %d: command %f\n", i, joint_position_command_[i]);
-    param_goal_position[0] = DXL_LOBYTE(DXL_LOWORD(positions[i]));
-    param_goal_position[1] = DXL_HIBYTE(DXL_LOWORD(positions[i]));
-    param_goal_position[2] = DXL_LOBYTE(DXL_HIWORD(positions[i]));
-    param_goal_position[3] = DXL_HIBYTE(DXL_HIWORD(positions[i]));
-    dxl_addparam_result = bulkWrite->addParam((uint8_t)IDs[i], ADDR_GOAL_POSITION, 4, param_goal_position);
+void SnakeRobot::write(ros::Duration dt) {
+  if (!is_sim){
+    uint8_t dxl_error = 0;
+    int dxl_comm_result = COMM_TX_FAIL;
+    int dxl_addparam_result = false;
+    uint8_t param_goal_position[4];
+    // Safety
+    positionJointSaturationInterface.enforceLimits(dt); 
+    // Write Goal Position (length : 4 bytes)
+    for (int i = 0; i < IDs.size(); i++){
+      double pos = joint_position_command_[i] * 4096 / 6.28 + init_pose[i];
+      positions[i] = (unsigned int)pos;
+      // ROS_INFO("Joint %d: command %f\n", i, joint_position_command_[i]);
+      param_goal_position[0] = DXL_LOBYTE(DXL_LOWORD(positions[i]));
+      param_goal_position[1] = DXL_HIBYTE(DXL_LOWORD(positions[i]));
+      param_goal_position[2] = DXL_LOBYTE(DXL_HIWORD(positions[i]));
+      param_goal_position[3] = DXL_HIBYTE(DXL_HIWORD(positions[i]));
+      dxl_addparam_result = bulkWrite->addParam((uint8_t)IDs[i], ADDR_GOAL_POSITION, 4, param_goal_position);
+    }
+    dxl_comm_result = bulkWrite->txPacket();
+
+    bulkWrite->clearParam();
   }
-  dxl_comm_result = bulkWrite->txPacket();
-
-  bulkWrite->clearParam();
 }
 
-int main(int argc, char** argv)
-{
-    //Initialze the ROS node.
-    ros::init(argc, argv, "snake_hardware_interface_node");
-    ros::NodeHandle nh;
-
-    //Separate Sinner thread for the Non-Real time callbacks such as service callbacks to load controllers
-    ros::MultiThreadedSpinner spinner(1);
-
-    // Create the object of the robot hardware_interface class and spin the thread.
-    SnakeRobot ROBOT(nh);
-    spinner.spin();
-
-    return 0;
-}

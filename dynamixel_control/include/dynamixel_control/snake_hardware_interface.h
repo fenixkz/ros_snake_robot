@@ -4,13 +4,12 @@
 #include <joint_limits_interface/joint_limits.h>
 #include <joint_limits_interface/joint_limits_interface.h>
 #include <joint_limits_interface/joint_limits_rosparam.h>
-#include <controller_manager/controller_manager.h>
+
 #include "std_msgs/String.h"
 #include "std_msgs/Float32.h"
 #include "dynamixel_sdk/dynamixel_sdk.h"
 #include "string"
 #include "vector"
-#include <boost/scoped_ptr.hpp>
 #include <ros/ros.h>
 
 #define ADDR_TORQUE_ENABLE    64
@@ -23,40 +22,38 @@
 class SnakeRobot : public hardware_interface::RobotHW
 {
     public:
-        SnakeRobot(ros::NodeHandle& nh);
+        SnakeRobot(ros::NodeHandle& nh, bool use_sim);
         ~SnakeRobot();
-        void init();
-        void update(const ros::TimerEvent& e);
         void read();
-        void write(ros::Duration elapsed_time);
+        void write(ros::Duration dt);
+        ros::Time getTime() const { return ros::Time::now(); }
+        ros::Duration getPeriod() const { return ros::Duration(0.01); }
 
-    protected:
+    private:
         void registerJoints();
-        
-        hardware_interface::JointStateInterface joint_state_interface_;
-        hardware_interface::PositionJointInterface position_joint_interface_;
-
-        joint_limits_interface::JointLimits limits;
-        joint_limits_interface::PositionJointSaturationInterface positionJointSaturationInterface;
-
-
-        double joint_position_[5];
-        double joint_velocity_[5];
-        double joint_effort_[5];
-        double joint_position_command_[5];
-        double protocol_version;
+        void startDXL();
+        void getParams();
         int baudrate;
+        bool is_sim;
+        double protocol_version;
         std::string device_name;
         std::vector<int> IDs;
         std::vector<int> init_pose;
         std::vector<uint32_t> positions;
         dynamixel::PortHandler * portHandler;
         dynamixel::PacketHandler * packetHandler;
+        std::shared_ptr<dynamixel::GroupBulkRead> bulkRead;
+        std::shared_ptr<dynamixel::GroupBulkWrite> bulkWrite;
         ros::NodeHandle nh_;
-        ros::Timer my_control_loop_;
-        ros::Duration elapsed_time_;
-        double loop_hz_;
-        boost::shared_ptr<controller_manager::ControllerManager> controller_manager_;
-        boost::shared_ptr<dynamixel::GroupBulkRead> bulkRead;
-        boost::shared_ptr<dynamixel::GroupBulkWrite> bulkWrite;
+        
+    protected:
+        hardware_interface::JointStateInterface joint_state_interface_;
+        hardware_interface::PositionJointInterface position_joint_interface_;
+        joint_limits_interface::JointLimits limits;
+        joint_limits_interface::PositionJointSaturationInterface positionJointSaturationInterface;
+        double joint_position_[5];
+        double joint_velocity_[5];
+        double joint_effort_[5];
+        double joint_position_command_[5];
+     
 };

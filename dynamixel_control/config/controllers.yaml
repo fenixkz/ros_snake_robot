@@ -4,23 +4,23 @@ snake:
       type: joint_state_controller/JointStateController
       publish_rate: 200
 
-    Joint1_PositionController:
+    joint1_controller:
       type: position_controllers/JointPositionController
       joint: Joint1
 
-    Joint2_PositionController:
+    joint2_controller:
       type: position_controllers/JointPositionController
       joint: Joint2
 
-    Joint3_PositionController:
+    joint3_controller:
       type: position_controllers/JointPositionController
       joint: Joint3
 
-    Joint4_PositionController:
+    joint4_controller:
       type: position_controllers/JointPositionController
       joint: Joint4
 
-    Joint5_PositionController:
+    joint5_controller:
       type: position_controllers/JointPositionController
       joint: Joint5
 
