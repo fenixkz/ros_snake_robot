@@ -193,17 +193,19 @@ void SnakeRobot::write(ros::Duration dt) {
         positionJointSaturationInterface.enforceLimits(dt); 
         // Write Goal Position (length : 4 bytes)
         for (int i = 0; i < num_joints; i++){
+            ROS_INFO("Writing to joint %d: %f\n", i, joint_position_command_[i]);
             double pos = joint_position_command_[i] * 4096 / 6.28 + init_pose[i];
-            positions[i] = (unsigned int)pos;
+            positions[i] = (uint8_t)pos;
             // ROS_INFO("Joint %d: command %f\n", i, joint_position_command_[i]);
             param_goal_position[0] = DXL_LOBYTE(DXL_LOWORD(positions[i]));
             param_goal_position[1] = DXL_HIBYTE(DXL_LOWORD(positions[i]));
             param_goal_position[2] = DXL_LOBYTE(DXL_HIWORD(positions[i]));
             param_goal_position[3] = DXL_HIBYTE(DXL_HIWORD(positions[i]));
             dxl_addparam_result = bulkWrite->addParam((uint8_t)IDs[i], control_table.goal_position.address, control_table.goal_position.length, param_goal_position);
+            ROS_INFO_STREAM("Results from bulkWrite->addParam() ->" << dxl_addparam_result);
         }
         dxl_comm_result = bulkWrite->txPacket();
-
+        ROS_INFO_STREAM("Results from bulkWrite->txPacket() ->" << dxl_comm_result);
         bulkWrite->clearParam();
     }
 }
