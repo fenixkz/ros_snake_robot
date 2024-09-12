@@ -161,6 +161,8 @@ void SnakeRobot::read(){
                 joint_position_[i] = (enc - init_pose[i]) / DYN2RAD;
             }
             bulkRead->clearParam();
+        }else{
+            ROS_ERROR("Failed to get motor position!");
         }
 
         // Read Present Velocity (length : 4 bytes) 
@@ -173,6 +175,8 @@ void SnakeRobot::read(){
                 joint_velocity_[i] = (int32_t)bulkRead->getData(IDs[i], control_table.current_velocity.address, control_table.current_velocity.length);
             }
             bulkRead->clearParam();
+        }else{
+            ROS_ERROR("Failed to get motor velocity!");
         }
         // Read Present Load (length : 2 bytes)
         for (int i = 0; i < num_joints; i++){
@@ -184,6 +188,8 @@ void SnakeRobot::read(){
                 joint_effort_[i] = (int16_t)bulkRead->getData(IDs[i], control_table.current_load.address, control_table.current_load.length);
             }
             bulkRead->clearParam();
+        }else{
+            ROS_ERROR("Failed to get motor load!");
         }
     }
 }
