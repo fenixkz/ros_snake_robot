@@ -92,7 +92,7 @@ class SnakeRobot : public hardware_interface::RobotHW
         uint8_t dxl_error = 0;
         int dxl_comm_result = COMM_TX_FAIL;
         std::string device_name;
-        std::vector<uint8_t> IDs;
+        std::vector<int> IDs;
         std::vector<int> init_pose;
         std::vector<uint32_t> positions;
         std::unique_ptr<dynamixel::PortHandler> portHandler;
