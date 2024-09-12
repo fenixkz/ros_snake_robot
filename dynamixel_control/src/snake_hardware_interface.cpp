@@ -114,7 +114,7 @@ void SnakeRobot::registerJoints(){
 bool SnakeRobot::setTorque(int id, bool enable){
     
     ROS_INFO("Enabling torque for Dynamixel ID %d", id);
-    dxl_comm_result = packetHandler->writeTxRx(portHandler.get(), id, control_table.torque.address, control_table.torque.length, (uint8_t*)enable, &dxl_error);
+    dxl_comm_result = packetHandler->write1ByteTxRx(portHandler.get(), id, control_table.torque.address, enable ? 1 : 0, &dxl_error);
     if (dxl_comm_result != COMM_SUCCESS) {
         ROS_ERROR("Failed to enable torque for Dynamixel ID %d, error: %d", id, dxl_error);
         return false;
