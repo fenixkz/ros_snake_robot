@@ -2,4 +2,4 @@ IDs: [1, 2, 3, 4, 5]
 protocol: 2.0
 baudrate: 4000000
 device_name: "/dev/ttyUSB0"
-initial_position: [2855, 3133, 2041, 2052, 2044]
+initial_position: [2048, 2048, 2048, 2048, 2048]
