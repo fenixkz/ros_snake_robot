@@ -149,14 +149,15 @@ void SnakeRobot::read(){
         int dxl_comm_result = COMM_TX_FAIL;
         int dxl_addparam_result = false;
         // Read Present Position (length : 4 bytes) and Convert uint32 -> int32
-        // When reading 2 byte data from AX / MX(1.0), use read2ByteTxRx() instead.
+        // When reading 2 byte data (uint8_t)posfrom AX / MX(1.0), use read2ByteTxRx() instead.
         for (int i = 0; i < num_joints; i++){
-            dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], control_table.current_position.address, control_table.current_position.length);
+            dxl_addparam_result = bulkRead->addParam(IDs[i], control_table.current_position.address, control_table.current_position.length);
         }
         dxl_comm_result = bulkRead->txRxPacket();
         if (dxl_comm_result == COMM_SUCCESS) {
             for (int i = 0; i < num_joints; i++){
-                int32_t enc = (int32_t)bulkRead->getData((uint8_t)IDs[i], control_table.current_position.address, control_table.current_position.length);
+                int32_t enc = (int32_t)bulkRead->getData(IDs[i], control_table.current_position.address, control_table.current_position.length);
+                ROS_INFO_STREAM("Raw value for Dynamixel motor associated with joint " << i + 1 << " is " << enc);
                 joint_position_[i] = (enc - init_pose[i]) / DYN2RAD;
             }
             bulkRead->clearParam();
@@ -164,23 +165,23 @@ void SnakeRobot::read(){
 
         // Read Present Velocity (length : 4 bytes) 
         for (int i = 0; i < num_joints; i++){
-            dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], control_table.current_velocity.address, control_table.current_velocity.length);
+            dxl_addparam_result = bulkRead->addParam(IDs[i], control_table.current_velocity.address, control_table.current_velocity.length);
         }
         dxl_comm_result = bulkRead->txRxPacket();
         if (dxl_comm_result == COMM_SUCCESS) {
             for (int i = 0; i < num_joints; i++){
-                joint_velocity_[i] = (int32_t)bulkRead->getData((uint8_t)IDs[i], control_table.current_velocity.address, control_table.current_velocity.length);
+                joint_velocity_[i] = (int32_t)bulkRead->getData(IDs[i], control_table.current_velocity.address, control_table.current_velocity.length);
             }
             bulkRead->clearParam();
         }
         // Read Present Load (length : 2 bytes)
         for (int i = 0; i < num_joints; i++){
-            dxl_addparam_result = bulkRead->addParam((uint8_t)IDs[i], control_table.current_load.address, control_table.current_load.length);
+            dxl_addparam_result = bulkRead->addParam(IDs[i], control_table.current_load.address, control_table.current_load.length);
         }
         dxl_comm_result = bulkRead->txRxPacket();
         if (dxl_comm_result == COMM_SUCCESS) {
             for (int i = 0; i < num_joints; i++){
-                joint_effort_[i] = (int16_t)bulkRead->getData((uint8_t)IDs[i], control_table.current_load.address, control_table.current_load.length);
+                joint_effort_[i] = (int16_t)bulkRead->getData(IDs[i], control_table.current_load.address, control_table.current_load.length);
             }
             bulkRead->clearParam();
         }
@@ -197,19 +198,19 @@ void SnakeRobot::write(ros::Duration dt) {
         positionJointSaturationInterface.enforceLimits(dt); 
         // Write Goal Position (length : 4 bytes)
         for (int i = 0; i < num_joints; i++){
-            ROS_INFO("Writing to joint %d: %f\n", i, joint_position_command_[i]);
             double pos = joint_position_command_[i] * DYN2RAD + init_pose[i];
             positions[i] = (uint8_t)pos;
+            // ROS_INFO("Writing to joint %d: %f\n", i, joint_position_command_[i]);
             // ROS_INFO("Joint %d: command %f\n", i, joint_position_command_[i]);
             param_goal_position[0] = DXL_LOBYTE(DXL_LOWORD(positions[i]));
             param_goal_position[1] = DXL_HIBYTE(DXL_LOWORD(positions[i]));
             param_goal_position[2] = DXL_LOBYTE(DXL_HIWORD(positions[i]));
             param_goal_position[3] = DXL_HIBYTE(DXL_HIWORD(positions[i]));
-            dxl_addparam_result = bulkWrite->addParam((uint8_t)IDs[i], control_table.goal_position.address, control_table.goal_position.length, param_goal_position);
-            ROS_INFO_STREAM("Results from bulkWrite->addParam() ->" << dxl_addparam_result);
+            dxl_addparam_result = bulkWrite->addParam(IDs[i], control_table.goal_position.address, control_table.goal_position.length, param_goal_position);
+            // ROS_INFO_STREAM("Results from bulkWrite->addParam() ->" << dxl_addparam_result);
         }
         dxl_comm_result = bulkWrite->txPacket();
-        ROS_INFO_STREAM("Results from bulkWrite->txPacket() ->" << dxl_comm_result);
+        // ROS_INFO_STREAM("Results from bulkWrite->txPacket() ->" << dxl_comm_result);
         bulkWrite->clearParam();
     }
 }

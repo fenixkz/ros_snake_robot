@@ -12,7 +12,7 @@
 #include "vector"
 #include <ros/ros.h>
 
-#define DYN2RAD               4096/6.28
+#define DYN2RAD 4096/6.28
 
 struct DXLMemoryRegister{
         constexpr DXLMemoryRegister(uint16_t addr, uint8_t len)
@@ -92,7 +92,7 @@ class SnakeRobot : public hardware_interface::RobotHW
         uint8_t dxl_error = 0;
         int dxl_comm_result = COMM_TX_FAIL;
         std::string device_name;
-        std::vector<int> IDs;
+        std::vector<uint8_t> IDs;
         std::vector<int> init_pose;
         std::vector<uint32_t> positions;
         std::unique_ptr<dynamixel::PortHandler> portHandler;
