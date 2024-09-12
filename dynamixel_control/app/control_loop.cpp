@@ -12,8 +12,8 @@ int main(int argc, char** argv)
     bool use_sim = false;
     nh_priv.getParam("use_sim", use_sim);
     
-    SnakeRobot robot(nh, use_sim);
-    controller_manager::ControllerManager cm(&robot, nh);
+    std::unique_ptr<SnakeRobot> robot = std::make_unique<SnakeRobot>(nh, use_sim);
+    controller_manager::ControllerManager cm(robot.get(), nh);
     //Separate Sinner thread for the Non-Real time callbacks such as service callbacks to load controllers
     ros::AsyncSpinner spinner(4); 
 
@@ -22,14 +22,14 @@ int main(int argc, char** argv)
 
     while(ros::ok())
     {
-        ros::Time now = robot.getTime();
-        ros::Duration dt = robot.getPeriod();
+        ros::Time now = robot->getTime();
+        ros::Duration dt = robot->getPeriod();
 
-        robot.read();
+        robot->read();
         
         cm.update(now, dt);
 
-        robot.write(dt);
+        robot->write(dt);
         
         dt.sleep();
     }
