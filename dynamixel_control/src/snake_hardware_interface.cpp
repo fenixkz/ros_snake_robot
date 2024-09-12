@@ -43,7 +43,7 @@ void SnakeRobot::getParams(){
     control_table = ControlTable(protocol_version);
 
     for (size_t i = 0; i < num_joints; i++) {
-        joint_position_command_[i] = init_pose[i];
+        joint_position_command_[i] = 0;
     }
 }
 
