@@ -22,7 +22,7 @@ struct DXLMemoryRegister{
         : address(0), length(0) {};
 
         uint16_t address;
-        uint8_t length;
+        uint16_t length;
     };
 
 class ControlTable{

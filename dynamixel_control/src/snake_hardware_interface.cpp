@@ -156,7 +156,7 @@ void SnakeRobot::read(){
         dxl_comm_result = bulkRead->txRxPacket();
         if (dxl_comm_result == COMM_SUCCESS) {
             for (int i = 0; i < num_joints; i++){
-                int32_t enc = (int32_t)bulkRead->getData((uint8_t)IDs[i], control_table.current_position.address, control_table.current_position.length);
+                uint32_t enc = bulkRead->getData((uint8_t)IDs[i], control_table.current_position.address, control_table.current_position.length);
                 ROS_INFO_STREAM("Raw value for Dynamixel motor associated with joint " << i + 1 << " is " << enc);
                 joint_position_[i] = (enc - init_pose[i]) / DYN2RAD;
             }
